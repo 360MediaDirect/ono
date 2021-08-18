@@ -186,6 +186,7 @@ export interface OnoError<T> extends ErrorPOJO {
    *
    * @see https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects
    */
+  // @ts-expect-error Kept for compatibility
   [inspect.custom](): ErrorPOJO & T;
 }
 
