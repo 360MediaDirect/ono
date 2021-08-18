@@ -1,4 +1,6 @@
-import { inspect } from "util";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+// @ts-expect-error This package has no d.ts
+import inspect from "util-inspect";
 
 /**
  * The default export of the "ono" module.
@@ -17,8 +19,14 @@ export interface OnoSingleton extends Ono<Error> {
  * Creates an `Ono` instance for a specifc error type.
  */
 export interface OnoConstructor {
-  <T extends ErrorLike>(constructor: ErrorLikeConstructor<T>, options?: OnoOptions): Ono<T>;
-  new<T extends ErrorLike>(constructor: ErrorLikeConstructor<T>, options?: OnoOptions): Ono<T>;
+  <T extends ErrorLike>(
+    constructor: ErrorLikeConstructor<T>,
+    options?: OnoOptions
+  ): Ono<T>;
+  new <T extends ErrorLike>(
+    constructor: ErrorLikeConstructor<T>,
+    options?: OnoOptions
+  ): Ono<T>;
 
   /**
    * Returns an object containing all properties of the given Error object,
@@ -41,7 +49,10 @@ export interface OnoConstructor {
    * @param error - The error object to extend. This object instance will be modified and returned.
    * @param props - An object whose properties will be added to the error
    */
-  extend<TError extends ErrorLike, TProps extends object>(error: TError, props?: TProps): TError & TProps & OnoError<TError & TProps>;
+  extend<TError extends ErrorLike, TProps extends object>(
+    error: TError,
+    props?: TProps
+  ): TError & TProps & OnoError<TError & TProps>;
 
   /**
    * Extends the given Error object with enhanced Ono functionality, such as nested stack traces
@@ -50,7 +61,10 @@ export interface OnoConstructor {
    * @param error - The error object to extend. This object instance will be modified and returned.
    * @param originalError - The original error. This error's stack trace will be added to the error's stack trace.
    */
-  extend<TError extends ErrorLike, TOriginal extends ErrorLike>(error: TError, originalError?: TOriginal): TError & TOriginal & OnoError<TError & TOriginal>;
+  extend<TError extends ErrorLike, TOriginal extends ErrorLike>(
+    error: TError,
+    originalError?: TOriginal
+  ): TError & TOriginal & OnoError<TError & TOriginal>;
 
   /**
    * Extends the given Error object with enhanced Ono functionality, such as nested stack traces,
@@ -60,7 +74,15 @@ export interface OnoConstructor {
    * @param originalError - The original error. This error's stack trace will be added to the error's stack trace.
    * @param props - An object whose properties will be added to the error
    */
-  extend<TError extends ErrorLike, TOriginal extends ErrorLike, TProps extends object>(error: TError, originalError?: TOriginal, props?: TProps): TError & TOriginal & TProps & OnoError<TError & TOriginal & TProps>;
+  extend<
+    TError extends ErrorLike,
+    TOriginal extends ErrorLike,
+    TProps extends object
+  >(
+    error: TError,
+    originalError?: TOriginal,
+    props?: TProps
+  ): TError & TOriginal & TProps & OnoError<TError & TOriginal & TProps>;
 }
 
 /**
@@ -86,7 +108,10 @@ export interface Ono<T extends ErrorLike> {
    * @param error - The original error
    * @param props - An object whose properties will be added to the returned error
    */
-  <TError extends ErrorLike, TProps extends object>(error: TError, props: TProps): T & TError & TProps & OnoError<T & TError & TProps>;
+  <TError extends ErrorLike, TProps extends object>(
+    error: TError,
+    props: TProps
+  ): T & TError & TProps & OnoError<T & TError & TProps>;
 
   /**
    * Creates a new error with a formatted message and the stack trace and properties of another error.
@@ -95,7 +120,11 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <TError extends ErrorLike>(error: TError, message: string, ...params: unknown[]): T & TError & OnoError<T & TError>;
+  <TError extends ErrorLike>(
+    error: TError,
+    message: string,
+    ...params: unknown[]
+  ): T & TError & OnoError<T & TError>;
 
   /**
    * Creates a new error with a formatted message and the stack trace and properties of another error,
@@ -106,7 +135,12 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <TError extends ErrorLike, TProps extends object>(error: TError, props: TProps, message: string, ...params: unknown[]): T & TError & TProps & OnoError<T & TError & TProps>;
+  <TError extends ErrorLike, TProps extends object>(
+    error: TError,
+    props: TProps,
+    message: string,
+    ...params: unknown[]
+  ): T & TError & TProps & OnoError<T & TError & TProps>;
 
   /**
    * Creates an error with a formatted message.
@@ -130,7 +164,11 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <TProps extends object>(props: TProps, message: string, ...params: unknown[]): T & TProps & OnoError<T & TProps>;
+  <TProps extends object>(
+    props: TProps,
+    message: string,
+    ...params: unknown[]
+  ): T & TProps & OnoError<T & TProps>;
 }
 
 /**
@@ -170,7 +208,8 @@ export type ErrorLike = Error | ErrorPOJO;
  * A constructor for `ErrorLike` objects.
  */
 export type ErrorLikeConstructor<T extends ErrorLike> =
-  ErrorLikeConstructorFunction<T> | ErrorLikeConstructorClass<T>;
+  | ErrorLikeConstructorFunction<T>
+  | ErrorLikeConstructorClass<T>;
 
 /**
  * A constructor function for `ErrorLike` objects.
@@ -193,7 +232,7 @@ export interface ErrorLikeConstructorFunction<T extends ErrorLike> {
  */
 export interface ErrorLikeConstructorClass<T extends ErrorLike> {
   readonly prototype: T;
-  new(...args: unknown[]): T;
+  new (...args: unknown[]): T;
 }
 
 /**
